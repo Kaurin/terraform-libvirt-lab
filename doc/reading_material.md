@@ -38,3 +38,7 @@ https://superuser.com/questions/1497732/what-are-default-user-account-and-passwo
 
 # Named values for terraform (local paths, root path, module path...)
 https://developer.hashicorp.com/terraform/language/expressions/references
+
+# Very similar project
+https://registry.terraform.io/modules/MonolithProjects/vm/libvirt/latest
+https://github.com/MonolithProjects/terraform-libvirt-vm/tree/main
