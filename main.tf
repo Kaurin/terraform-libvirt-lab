@@ -38,42 +38,9 @@ resource "libvirt_cloudinit_disk" "cloud_init" {
 
   name = "${each.value.name}.iso"
 
-  meta_data = yamlencode({
-    "instance-id" : each.value.name,
-    "local-hostname" : each.value.name
-  })
-
-  user_data = join("\n", ["#cloud-config",
-    yamlencode({
-      "users" : [
-        {
-          "name" : var.ssh_user
-          "ssh_authorized_keys" : [
-            var.ssh_authorized_key
-          ]
-          "sudo" : "ALL=(ALL) NOPASSWD:ALL"
-          "lock_passwd" : true
-          "groups" : "sudo"
-          "shell" : "/bin/bash"
-        }
-      ]
-    })
-  ])
-
-  network_config = yamlencode({
-    "network" : {
-      "version" : 2
-      "ethernets" : {
-        "${each.value.eth_devname}" : {
-          "addresses" : each.value.ipaddrs
-          "gateway4" : each.value.net_gateway
-          "nameservers" : {
-            "addresses" : each.value.dnsaddrs
-          }
-        }
-      }
-    }
-  })
+  meta_data      = yamlencode(each.value.meta_data)
+  user_data      = join("\n", ["#cloud-config", yamlencode(each.value.user_data)])
+  network_config = yamlencode(each.value.network_config)
 
   pool = libvirt_pool.lab_cluster.name
 }

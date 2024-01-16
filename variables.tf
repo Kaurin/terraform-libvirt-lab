@@ -10,34 +10,13 @@ variable "cloud_image_pool" {
   default = "default"
 }
 
-variable "ssh_user" {
-  type    = string
-  default = "lab"
-}
-
-variable "ssh_authorized_key" {
-  type = string
-}
-
 variable "lab_vms" {
   type = list(object({
-    name        = string
-    ram         = number # In Megabytes
-    vcpu        = number
-    ipaddrs     = list(string)
-    dnsaddrs    = list(string)
-    net_gateway = string
-    eth_devname = string
+    name           = string
+    ram            = number # In Megabytes
+    vcpu           = number
+    meta_data      = map(any) # Follow the structure as seen here: https://cloudinit.readthedocs.io/en/latest/reference/datasources/nocloud.html#example-meta-data
+    user_data      = map(any) # Follow the structure as seen in examples here: https://cloudinit.readthedocs.io/en/latest/reference/modules.html
+    network_config = map(any) # Follow the network-config format v2 (v1 untested): https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html
   }))
-  default = [
-    {
-      name        = "example_box"
-      ram         = 2048
-      vcpu        = 4
-      ipaddrs     = ["192.168.0.150"]
-      dnsaddrs    = ["1.1.1.1"]
-      net_gateway = "192.168.0.1"
-      eth_devname = "eth0"
-    }
-  ]
 }
