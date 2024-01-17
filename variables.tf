@@ -19,14 +19,23 @@ variable "libvirt_network_name" {
   description = "Name of our libvirt network. Example `mytestnetwork`"
 }
 
+variable "bridge_device" {
+  type        = string
+  description = "Name of the network bridge device. For example `br0`"
+  default     = "br0"
+}
+
 variable "lab_vms" {
   type = list(object({
-    quantity       = number
-    name           = string
-    ram            = number # In Megabytes
-    vcpu           = number
-    meta_data      = map(any) # Follow the structure as seen here: https://cloudinit.readthedocs.io/en/latest/reference/datasources/nocloud.html#example-meta-data
-    user_data      = map(any) # Follow the structure as seen in examples here: https://cloudinit.readthedocs.io/en/latest/reference/modules.html
+    quantity = number
+    name     = string
+    ram      = number # In Megabytes
+    vcpu     = number
+    meta_data = object({ # https://cloudinit.readthedocs.io/en/latest/reference/datasources/nocloud.html#example-meta-data
+      instance-id : string
+      local-hostname : string
+    })
+    user_data      = any      # Follow the structure as seen in examples here: https://cloudinit.readthedocs.io/en/latest/reference/modules.html
     network_config = map(any) # Follow the network-config format v2 (v1 untested): https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html
   }))
   description = "List of objects that represent your VMs. `meta_data`, `user_data` and `network_config` are exposed as non-guardrailed maps so the user has full customizability."

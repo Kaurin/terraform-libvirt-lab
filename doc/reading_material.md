@@ -42,3 +42,10 @@ https://developer.hashicorp.com/terraform/language/expressions/references
 # Very similar project
 https://registry.terraform.io/modules/MonolithProjects/vm/libvirt/latest
 https://github.com/MonolithProjects/terraform-libvirt-vm/tree/main
+
+# Nested loops and outputs
+https://terraformguru.com/terraform-certification-using-azure-cloud/34-Output-Values-with-for_each-and-for-loops/
+
+# Debugging cloud-init
+https://cloudinit.readthedocs.io/en/latest/howto/debugging.html
+

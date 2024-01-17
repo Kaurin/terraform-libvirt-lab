@@ -6,6 +6,11 @@ locals {
         # derived_name - if quantity is 1, don't append a number. Just use the default name. Example: "customname"
         #                if quantity is not 1, then append a number. example "customname-3"
         derived_name = vm.quantity == 1 ? vm.name : join("-", [vm.name, num + 1])
+        # meta_data    - See above comment on clarification on how we append numberrs
+        meta_data = {
+          "instance-id" : vm.meta_data.instance-id == 1 ? vm.meta_data.instance-id : join("-", [vm.meta_data.instance-id, num + 1])
+          "local-hostname" : vm.meta_data.local-hostname == 1 ? vm.meta_data.local-hostname : join("-", [vm.meta_data.local-hostname, num + 1])
+        }
       }
     ]
   ])
@@ -25,7 +30,7 @@ resource "libvirt_pool" "lab_cluster" {
 resource "libvirt_network" "lab_network" {
   name   = var.libvirt_network_name
   mode   = "bridge"
-  bridge = "br0"
+  bridge = var.bridge_device
 }
 
 resource "libvirt_volume" "cloud_image" {
@@ -49,7 +54,7 @@ resource "libvirt_cloudinit_disk" "cloud_init" {
 
   name = "${each.value.derived_name}.iso"
 
-  meta_data      = yamlencode(each.value.vm.meta_data)
+  meta_data      = yamlencode(each.value.meta_data)
   user_data      = join("\n", ["#cloud-config", yamlencode(each.value.vm.user_data)])
   network_config = yamlencode(each.value.vm.network_config)
 
