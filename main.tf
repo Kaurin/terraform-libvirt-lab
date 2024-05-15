@@ -8,8 +8,8 @@ locals {
         derived_name = vm.quantity == 1 ? vm.name : join("-", [vm.name, num + 1])
         # meta_data    - See above comment on clarification on how we append numberrs
         meta_data = {
-          "instance-id" : vm.meta_data.instance-id == 1 ? vm.meta_data.instance-id : join("-", [vm.meta_data.instance-id, num + 1])
-          "local-hostname" : vm.meta_data.local-hostname == 1 ? vm.meta_data.local-hostname : join("-", [vm.meta_data.local-hostname, num + 1])
+          "instance-id" : vm.quantity == 1 ? vm.meta_data.instance-id : join("-", [vm.meta_data.instance-id, num + 1])
+          "local-hostname" : vm.quantity == 1 ? vm.meta_data.local-hostname : join("-", [vm.meta_data.local-hostname, num + 1])
         }
       }
     ]
