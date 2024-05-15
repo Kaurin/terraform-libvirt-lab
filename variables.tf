@@ -6,7 +6,6 @@ variable "libvirt_pool_name" {
 variable "libvirt_pool_dir" {
   type        = string
   description = "Directory on your local storage where the pool directory should be located. This directory might have to be created manually with the correct permissions so qemu or libvirt can access it."
-  # Fedora: sudo mkdir /var/CHANGE_THIS_NAME && sudo chown qemu:qemu /var/CHANGE_THIS_NAME
 }
 variable "cloud_image" {
   type        = string
