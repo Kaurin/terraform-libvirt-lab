@@ -35,20 +35,22 @@ module "single_ubuntu" {
           }
         ]
       }
-      network_config = {
-        "network" : {
-          "version" : 2
-          "ethernets" : {
-            "ens3" : {
-              "addresses" : ["192.168.0.160/24"]
-              "gateway4" : "192.168.0.1"
-              "nameservers" : {
-                "addresses" : ["192.168.0.1", "192.168.0.2"]
+      network_configs = [
+        {
+          "network" : {
+            "version" : 2
+            "ethernets" : {
+              "ens3" : {
+                "addresses" : ["192.168.0.160/24"]
+                "gateway4" : "192.168.0.1"
+                "nameservers" : {
+                  "addresses" : ["192.168.0.1", "192.168.0.2"]
+                }
               }
             }
           }
         }
-      }
+      ]
     }
   ]
 }

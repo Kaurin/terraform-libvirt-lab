@@ -12,7 +12,6 @@ variable "cloud_image" {
   description = "Full path to the image of your VM's operating system. Only 'cloud' variety of various images are supported like Fedora-Cloud or Ubuntu-Cloud. Example `/home/myusername/Downloads/Fedora-Cloud-Base-39-1.5.x86_64.qcow2`"
 }
 
-
 variable "libvirt_network_name" {
   type        = string
   description = "Name of our libvirt network. Example `mytestnetwork`"
@@ -34,8 +33,8 @@ variable "lab_vms" {
       instance-id : string
       local-hostname : string
     })
-    user_data      = any      # Follow the structure as seen in examples here: https://cloudinit.readthedocs.io/en/latest/reference/modules.html
-    network_config = map(any) # Follow the network-config format v2 (v1 untested): https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html
+    user_data       = any            # Follow the structure as seen in examples here: https://cloudinit.readthedocs.io/en/latest/reference/modules.html
+    network_configs = list(map(any)) # Follow the network-config format v2 (v1 untested): https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html
   }))
-  description = "List of objects that represent your VMs. `meta_data`, `user_data` and `network_config` are exposed as non-guardrailed maps so the user has full customizability."
+  description = "List of objects that represent your VMs. `meta_data`, `user_data` and `network_configs` are exposed as non-guardrailed maps so the user has full customizability."
 }

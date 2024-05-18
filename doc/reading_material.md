@@ -18,7 +18,6 @@ nmcli con add type bridge-slave ifname enp7s0 master br0
 nmcli con show
 nmcli con --help
 nmcli con down 1364e2b2-1e10-392b-979b-e383ab1aee56  # ----- "Wired network 3"
-nmcli con up br0
 nmcli con
 nmcli con up b9ab0103-aaf3-48ab-8405-45b332986609    # ------ br0
 ```

@@ -11,6 +11,7 @@ locals {
           "instance-id" : vm.quantity == 1 ? vm.meta_data.instance-id : join("-", [vm.meta_data.instance-id, num + 1])
           "local-hostname" : vm.quantity == 1 ? vm.meta_data.local-hostname : join("-", [vm.meta_data.local-hostname, num + 1])
         }
+        network_config = vm.network_configs[num]
       }
     ]
   ])
@@ -56,7 +57,7 @@ resource "libvirt_cloudinit_disk" "cloud_init" {
 
   meta_data      = yamlencode(each.value.meta_data)
   user_data      = join("\n", ["#cloud-config", yamlencode(each.value.vm.user_data)])
-  network_config = yamlencode(each.value.vm.network_config)
+  network_config = yamlencode(each.value.network_config)
 
   pool = libvirt_pool.lab_cluster.name
 }
