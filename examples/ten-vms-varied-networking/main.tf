@@ -38,7 +38,7 @@ module "split_ip_ranges" {
       # We are concatinating three lists of network_configs into a single list
       network_configs = concat(
         [
-          for num in range(161, 166) : # 4 values, goes up to 164
+          for num in range(161, 165) : # 4 values, goes up to 164
           {
             "network" : {
               "version" : 2
@@ -68,7 +68,7 @@ module "split_ip_ranges" {
           }
         ],
         [
-          for num in range(201, 204) : # 4 values, goes up to 204
+          for num in range(201, 205) : # 4 values, goes up to 204
           {
             "network" : {
               "version" : 2
