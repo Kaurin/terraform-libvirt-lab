@@ -33,20 +33,22 @@ module "two_different_vms" {
           }
         ]
       }
-      network_config = {
-        "network" : {
-          "version" : 2
-          "ethernets" : {
-            "eth0" : {
-              "addresses" : ["192.168.0.150/24"]
-              "gateway4" : "192.168.0.1"
-              "nameservers" : {
-                "addresses" : ["1.1.1.1"]
+      network_configs = [
+        {
+          "network" : {
+            "version" : 2
+            "ethernets" : {
+              "eth0" : {
+                "addresses" : ["192.168.0.150/24"]
+                "gateway4" : "192.168.0.1"
+                "nameservers" : {
+                  "addresses" : ["1.1.1.1"]
+                }
               }
             }
           }
         }
-      }
+      ]
     },
     {
       name     = "agentbox"
@@ -71,20 +73,22 @@ module "two_different_vms" {
           }
         ]
       }
-      network_config = {
-        "network" : {
-          "version" : 2
-          "ethernets" : {
-            "eth0" : {
-              "addresses" : ["192.168.0.151/24"]
-              "gateway4" : "192.168.0.1"
-              "nameservers" : {
-                "addresses" : ["8.8.8.8"]
+      network_configs = [
+        {
+          "network" : {
+            "version" : 2
+            "ethernets" : {
+              "eth0" : {
+                "addresses" : ["192.168.0.151/24"]
+                "gateway4" : "192.168.0.1"
+                "nameservers" : {
+                  "addresses" : ["8.8.8.8"]
+                }
               }
             }
           }
         }
-      }
+      ]
     }
   ]
 }

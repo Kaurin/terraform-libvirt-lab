@@ -10,15 +10,18 @@ Where this project differs from `terraform-libvirt-vm` is in exposing certain co
 
 ## Testing
 
-Testing host is a Fedora OS with KVM/libvirt installed.
+Testing host is a Fedora OS with KVM/libvirt installed - TODO
 
 ## Limitations
 * One source "cloud" image per lab.
-* One storage pool
-* One network of the "bridged" type
-* When using multiples of a single machine, you are required to use DHCP in your network settings. Otherwise all machines will get the same IP (or same set of IPs depending on what you provide).
+* One storage pool per lab
+* One network of the "bridged" type per lab
 
 ## Prerequesites
 
 * A bridge setup on your host. Defaults to "br0" in this module's config but is customizable.
 * A "cloud" flavour image of your favorite distro downloaded
+
+## Examples
+
+Please check out the [examples](examples/) directory.
