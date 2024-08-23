@@ -33,8 +33,10 @@ variable "lab_vms" {
       instance-id : string
       local-hostname : string
     })
-    user_data       = any            # Follow the structure as seen in examples here: https://cloudinit.readthedocs.io/en/latest/reference/modules.html
-    network_configs = list(map(any)) # Follow the network-config format v2 (v1 untested): https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html
+    user_data = any # Follow the structure as seen in examples here: https://cloudinit.readthedocs.io/en/latest/reference/modules.html
+    # Follow the network-config format v2 (v1 untested): https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html
+    # However, keep in mind the bug: https://askubuntu.com/questions/1405294/ubuntu-20-04-cloud-init-wont-configure-network
+    network_configs = any # list(any) doesn't work if we concatenate lists, so to allow more freedom, I opted for any
   }))
   description = "List of objects that represent your VMs. `meta_data`, `user_data` and `network_configs` are exposed as non-guardrailed maps so the user has full customizability."
 }

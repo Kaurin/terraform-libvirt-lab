@@ -40,15 +40,13 @@ module "split_ip_ranges" {
         [
           for num in range(161, 165) : # 4 values, goes up to 164
           {
-            "network" : {
-              "version" : 2
-              "ethernets" : {
-                "eth0" : {
-                  "addresses" : ["192.168.0.${num}/24"]
-                  "gateway4" : "192.168.0.1"
-                  "nameservers" : {
-                    "addresses" : ["192.168.0.1", "192.168.0.2"]
-                  }
+            "version" : 2
+            "ethernets" : {
+              "eth0" : {
+                "addresses" : ["192.168.0.${num}/24"]
+                "gateway4" : "192.168.0.1"
+                "nameservers" : {
+                  "addresses" : ["192.168.0.1", "192.168.0.2"]
                 }
               }
             }
@@ -57,12 +55,10 @@ module "split_ip_ranges" {
         [
           for _ in range(2) : # 2 DHCP hosts
           {
-            "network" : {
-              "version" : 2
-              "ethernets" : {
-                "eth0" : {
-                  "dhcp4" : true
-                }
+            "version" : 2
+            "ethernets" : {
+              "eth0" : {
+                "dhcp4" : true
               }
             }
           }
@@ -70,15 +66,13 @@ module "split_ip_ranges" {
         [
           for num in range(201, 205) : # 4 values, goes up to 204
           {
-            "network" : {
-              "version" : 2
-              "ethernets" : {
-                "eth0" : {
-                  "addresses" : ["192.168.0.${num}/24"]
-                  "gateway4" : "192.168.0.1"
-                  "nameservers" : {
-                    "addresses" : ["192.168.0.1", "192.168.0.2"]
-                  }
+            "version" : 2
+            "ethernets" : {
+              "eth0" : {
+                "addresses" : ["192.168.0.${num}/24"]
+                "gateway4" : "192.168.0.1"
+                "nameservers" : {
+                  "addresses" : ["192.168.0.1", "192.168.0.2"]
                 }
               }
             }

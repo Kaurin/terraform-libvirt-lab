@@ -5,7 +5,7 @@ module "single_ubuntu" {
 
   libvirt_pool_name = "ubuntu_pool"
   libvirt_pool_dir  = "/var/ubuntu_pool"
-  cloud_image       = "/var/lib/libvirt/images//noble-server-cloudimg-amd64.img"
+  cloud_image       = "/var/lib/libvirt/images/noble-server-cloudimg-amd64.img"
 
   libvirt_network_name = "ubuntu_network"
   bridge_device        = "br0"
@@ -37,15 +37,13 @@ module "single_ubuntu" {
       }
       network_configs = [
         {
-          "network" : {
-            "version" : 2
-            "ethernets" : {
-              "ens3" : {
-                "addresses" : ["192.168.0.160/24"]
-                "gateway4" : "192.168.0.1"
-                "nameservers" : {
-                  "addresses" : ["192.168.0.1", "192.168.0.2"]
-                }
+          "version" : 2
+          "ethernets" : {
+            "ens3" : {
+              "addresses" : ["192.168.0.160/24"]
+              "gateway4" : "192.168.0.1"
+              "nameservers" : {
+                "addresses" : ["192.168.0.1", "192.168.0.2"]
               }
             }
           }

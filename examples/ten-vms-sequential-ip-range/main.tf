@@ -38,15 +38,13 @@ module "single_ip_range" {
       network_configs = [
         for num in range(161, 171) : # 10 values, goes up to 170
         {
-          "network" : {
-            "version" : 2
-            "ethernets" : {
-              "eth0" : {
-                "addresses" : ["192.168.0.${num}/24"]
-                "gateway4" : "192.168.0.1"
-                "nameservers" : {
-                  "addresses" : ["192.168.0.1", "192.168.0.2"]
-                }
+          "version" : 2
+          "ethernets" : {
+            "eth0" : {
+              "addresses" : ["192.168.0.${num}/24"]
+              "gateway4" : "192.168.0.1"
+              "nameservers" : {
+                "addresses" : ["192.168.0.1", "192.168.0.2"]
               }
             }
           }
