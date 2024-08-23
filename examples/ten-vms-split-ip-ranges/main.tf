@@ -41,15 +41,13 @@ module "split_ip_ranges" {
         [
           for num in range(161, 166) : # 5 values, goes up to 165
           {
-            "network" : {
-              "version" : 2
-              "ethernets" : {
-                "eth0" : {
-                  "addresses" : ["192.168.0.${num}/24"]
-                  "gateway4" : "192.168.0.1"
-                  "nameservers" : {
-                    "addresses" : ["192.168.0.1", "192.168.0.2"]
-                  }
+            "version" : 2
+            "ethernets" : {
+              "eth0" : {
+                "addresses" : ["192.168.0.${num}/24"]
+                "gateway4" : "192.168.0.1"
+                "nameservers" : {
+                  "addresses" : ["192.168.0.1", "192.168.0.2"]
                 }
               }
             }
@@ -58,15 +56,13 @@ module "split_ip_ranges" {
         [
           for num in range(201, 206) : # 5 values, goes up to 205
           {
-            "network" : {
-              "version" : 2
-              "ethernets" : {
-                "eth0" : {
-                  "addresses" : ["192.168.0.${num}/24"]
-                  "gateway4" : "192.168.0.1"
-                  "nameservers" : {
-                    "addresses" : ["192.168.0.1", "192.168.0.2"]
-                  }
+            "version" : 2
+            "ethernets" : {
+              "eth0" : {
+                "addresses" : ["192.168.0.${num}/24"]
+                "gateway4" : "192.168.0.1"
+                "nameservers" : {
+                  "addresses" : ["192.168.0.1", "192.168.0.2"]
                 }
               }
             }

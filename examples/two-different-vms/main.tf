@@ -4,7 +4,7 @@ module "two_different_vms" {
 
   libvirt_pool_name = "two_different_vms_pool"
   libvirt_pool_dir  = "/var/libvirt_two_different_vms_dir"
-  cloud_image       = "/var/lib/libvirt/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2"
+  cloud_image       = "/home/myuser/Downloads/Fedora-Cloud-Base-Generic.x86_64-40-1.14.qcow2"
 
   libvirt_network_name = "two_different_vms_network"
   bridge_device        = "br0"
@@ -35,15 +35,13 @@ module "two_different_vms" {
       }
       network_configs = [
         {
-          "network" : {
-            "version" : 2
-            "ethernets" : {
-              "eth0" : {
-                "addresses" : ["192.168.0.150/24"]
-                "gateway4" : "192.168.0.1"
-                "nameservers" : {
-                  "addresses" : ["1.1.1.1"]
-                }
+          "version" : 2
+          "ethernets" : {
+            "eth0" : {
+              "addresses" : ["192.168.0.150/24"]
+              "gateway4" : "192.168.0.1"
+              "nameservers" : {
+                "addresses" : ["1.1.1.1"]
               }
             }
           }
@@ -75,15 +73,13 @@ module "two_different_vms" {
       }
       network_configs = [
         {
-          "network" : {
-            "version" : 2
-            "ethernets" : {
-              "eth0" : {
-                "addresses" : ["192.168.0.151/24"]
-                "gateway4" : "192.168.0.1"
-                "nameservers" : {
-                  "addresses" : ["8.8.8.8"]
-                }
+          "version" : 2
+          "ethernets" : {
+            "eth0" : {
+              "addresses" : ["192.168.0.151/24"]
+              "gateway4" : "192.168.0.1"
+              "nameservers" : {
+                "addresses" : ["8.8.8.8"]
               }
             }
           }
