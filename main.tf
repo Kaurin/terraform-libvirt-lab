@@ -6,7 +6,7 @@ locals {
         # derived_name - if quantity is 1, don't append a number. Just use the default name. Example: "customname"
         #                if quantity is not 1, then append a number. example "customname-3"
         derived_name = vm.quantity == 1 ? vm.name : join("-", [vm.name, num + 1])
-        # meta_data    - See above comment on clarification on how we append numberrs
+        # meta_data    - See above comment on clarification on how we append numbers
         meta_data = {
           "instance-id" : vm.quantity == 1 ? vm.meta_data.instance-id : join("-", [vm.meta_data.instance-id, num + 1])
           "local-hostname" : vm.quantity == 1 ? vm.meta_data.local-hostname : join("-", [vm.meta_data.local-hostname, num + 1])
@@ -71,6 +71,16 @@ resource "libvirt_domain" "lab_vms" {
 
   disk {
     volume_id = libvirt_volume.lab_volume[each.value.derived_name].id
+  }
+
+  console {
+    type        = "pty"
+    target_port = "0"
+    target_type = "virtio"
+  }
+
+  cpu {
+    mode = "host-passthrough"
   }
 
   network_interface {
