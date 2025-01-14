@@ -15,7 +15,7 @@ Testing host is a Fedora OS with KVM/libvirt installed - TODO
 * One storage pool per lab
 * One network of the "bridged" type per lab
 
-## Prerequesites
+## Prerequisites
 
 * A bridge setup on your host. Defaults to "br0" in this module's config but is customizable.
-* A "cloud" flavour image of your favorite distro downloaded
+* A "cloud" flavour image of your favorite Linux distribution downloaded
