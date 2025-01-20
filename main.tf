@@ -25,7 +25,9 @@ locals {
 resource "libvirt_pool" "lab_cluster" {
   name = var.libvirt_pool_name
   type = "dir"
-  path = var.libvirt_pool_dir
+  target {
+    path = var.libvirt_pool_dir
+  }
 }
 
 resource "libvirt_network" "lab_network" {
@@ -68,6 +70,7 @@ resource "libvirt_domain" "lab_vms" {
   name   = each.value.derived_name
   vcpu   = each.value.vm.vcpu
   memory = each.value.vm.ram
+  # machine = "pc-q35-9.1"
 
   disk {
     volume_id = libvirt_volume.lab_volume[each.value.derived_name].id
