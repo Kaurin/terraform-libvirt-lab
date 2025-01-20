@@ -9,7 +9,7 @@ output "lab_pool_id" {
 }
 
 output "lab_pool_path" {
-  value       = libvirt_pool.lab_cluster.path
+  value       = libvirt_pool.lab_cluster.target[*].path
   description = "Libvirt pool path"
 }
 
