@@ -1,3 +1,3 @@
 provider "libvirt" {
-  uri = "qemu:///session"
+  uri = "qemu:///system"
 }

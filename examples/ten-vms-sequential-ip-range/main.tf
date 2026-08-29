@@ -4,9 +4,10 @@ module "single_ip_range" {
   source = "../.."
 
   libvirt_pool_name = "single_ip_rangevms_pool"
-  libvirt_pool_dir  = "/var/libvirt_single_ip_rangevms_dir"
-  cloud_image       = "/home/myuser/Downloads/Fedora-Cloud-Base-Generic.x86_64-40-1.14.qcow2"
+  libvirt_pool_dir  = "/var/libvirt-pools/libvirt_single_ip_rangevms_dir"
+  cloud_image       = "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2" # or  "/home/myuser/Downloads/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2"
 
+  capacity             = 10737418240 # 10 GiB
   libvirt_network_name = "single_ip_rangevms_network"
   bridge_device        = "br0"
 
@@ -40,7 +41,7 @@ module "single_ip_range" {
         {
           "version" : 2
           "ethernets" : {
-            "eth0" : {
+            "enp1s0" : {
               "addresses" : ["192.168.0.${num}/24"]
               "gateway4" : "192.168.0.1"
               "nameservers" : {

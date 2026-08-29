@@ -9,7 +9,13 @@ variable "libvirt_pool_dir" {
 }
 variable "cloud_image" {
   type        = string
-  description = "Full path to the image of your VM's operating system. Only 'cloud' variety of various images are supported like Fedora-Cloud or Ubuntu-Cloud. Example `/home/myusername/Downloads/Fedora-Cloud-Base-39-1.5.x86_64.qcow2`"
+  description = "Full path to the image of your VM's operating system. Only 'cloud' variety of various images are supported like Fedora-Cloud or Ubuntu-Cloud. Example `/home/myusername/Downloads/Fedora-Cloud-Base-39-1.5.x86_64.qcow2` or a URL like `https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img`"
+}
+
+variable "capacity" {
+  type        = number
+  description = "Capacity of the VM root volume in bytes. Must be at least as large as the cloud image it is layered on top of."
+  default     = 10737418240 # 10 GiB
 }
 
 variable "libvirt_network_name" {
