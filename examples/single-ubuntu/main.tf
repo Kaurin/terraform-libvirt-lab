@@ -4,9 +4,10 @@ module "single_ubuntu" {
   source = "../.."
 
   libvirt_pool_name = "ubuntu_pool"
-  libvirt_pool_dir  = "/var/ubuntu_pool"
-  cloud_image       = "/var/lib/libvirt/images/noble-server-cloudimg-amd64.img"
+  libvirt_pool_dir  = "/var/libvirt-pools/ubuntu_pool"
+  cloud_image       = "https://cloud-images.ubuntu.com/resolute/current/resolute-server-cloudimg-amd64.img" # or  "/home/myuser/Downloads/images/resolute-server-cloudimg-amd64.img
 
+  capacity             = 10737418240 # 10 GiB
   libvirt_network_name = "ubuntu_network"
   bridge_device        = "br0"
 
@@ -39,7 +40,7 @@ module "single_ubuntu" {
         {
           "version" : 2
           "ethernets" : {
-            "ens3" : {
+            "enp1s0" : {
               "addresses" : ["192.168.0.160/24"]
               "gateway4" : "192.168.0.1"
               "nameservers" : {

@@ -1,6 +1,6 @@
 # Libvirt Lab Terraform module
 
-Terraform module which allows for a relatively quick creation of a lab environment on a Linux host on which libvirt and KVM virtualization are available.
+Terraform module which allows for a quick creation of a lab environment on a Linux host on which libvirt and KVM virtualization are available.
 
 This module is similar to [terraform-libvirt-vm](https://registry.terraform.io/modules/MonolithProjects/vm/libvirt/latest) which is worth checking out to see which one fits your use-case better.
 

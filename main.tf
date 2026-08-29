@@ -25,72 +25,204 @@ locals {
 resource "libvirt_pool" "lab_cluster" {
   name = var.libvirt_pool_name
   type = "dir"
-  target {
+  target = {
     path = var.libvirt_pool_dir
   }
 }
 
 resource "libvirt_network" "lab_network" {
-  name   = var.libvirt_network_name
-  mode   = "bridge"
-  bridge = var.bridge_device
+  name = var.libvirt_network_name
+
+  forward = {
+    mode = "bridge"
+  }
+
+  bridge = {
+    name = var.bridge_device
+  }
+
+  autostart = true
 }
 
 resource "libvirt_volume" "cloud_image" {
-  name   = "cloud_image.qcow2"
-  pool   = libvirt_pool.lab_cluster.name
-  source = var.cloud_image
-  format = "qcow2"
+  name = "cloud_image"
+  pool = libvirt_pool.lab_cluster.name
+  target = {
+    format = {
+      type = "qcow2"
+    }
+  }
+
+  create = {
+    content = {
+      url = var.cloud_image
+    }
+  }
+  # capacity is automatically computed from Content-Length when available
 }
 
 resource "libvirt_volume" "lab_volume" {
-  for_each         = local.loop_vms
-  name             = "${each.value.derived_name}.qcow2"
-  pool             = libvirt_pool.lab_cluster.name
-  base_volume_id   = libvirt_volume.cloud_image.id
-  base_volume_pool = libvirt_pool.lab_cluster.name
-  format           = "qcow2"
+  for_each = local.loop_vms
+  name     = "${each.value.derived_name}.qcow2"
+  pool     = libvirt_pool.lab_cluster.name
+  capacity = var.capacity
+
+  backing_store = {
+    path = libvirt_volume.cloud_image.path
+    format = {
+      type = "qcow2"
+    }
+  }
+
+  target = {
+    format = {
+      type = "qcow2"
+    }
+  }
 }
+
 
 resource "libvirt_cloudinit_disk" "cloud_init" {
   for_each = local.loop_vms
 
-  name = "${each.value.derived_name}.iso"
+  name = each.value.derived_name
 
   meta_data      = yamlencode(each.value.meta_data)
   user_data      = join("\n", ["#cloud-config", yamlencode(each.value.vm.user_data)])
   network_config = yamlencode(each.value.network_config)
 
-  pool = libvirt_pool.lab_cluster.name
+}
+
+
+resource "libvirt_volume" "cloud_init" {
+  for_each = local.loop_vms
+  name     = "${each.value.derived_name}.iso"
+  pool     = libvirt_pool.lab_cluster.name
+  target = {
+    format = {
+      type = "iso"
+    }
+  }
+  create = {
+    content = {
+      url = libvirt_cloudinit_disk.cloud_init[each.key].path
+    }
+  }
 }
 
 resource "libvirt_domain" "lab_vms" {
   for_each = local.loop_vms
+  type     = "kvm"
+  name     = each.value.derived_name
+  vcpu     = each.value.vm.vcpu
 
-  name   = each.value.derived_name
-  vcpu   = each.value.vm.vcpu
-  memory = each.value.vm.ram
-  # machine = "pc-q35-9.1"
+  # `memory` is interpreted in `memory_unit`, which libvirt defaults to KiB.
+  # Our variable is in Megabytes, so state the unit explicitly.
+  memory      = each.value.vm.ram
+  memory_unit = "MiB"
 
-  disk {
-    volume_id = libvirt_volume.lab_volume[each.value.derived_name].id
+  running = true
+
+  os = {
+    type         = "hvm"
+    type_arch    = "x86_64"
+    type_machine = "q35"
+    boot_devices = [
+      {
+        "dev" = "hd"
+      }
+    ]
   }
 
-  console {
-    type        = "pty"
-    target_port = "0"
-    target_type = "virtio"
-  }
-
-  cpu {
+  cpu = {
     mode = "host-passthrough"
   }
 
-  network_interface {
-    network_id = libvirt_network.lab_network.id
-    hostname   = each.value.derived_name
+  # Without ACPI the guest cannot bring up devices behind the q35 PCIe root
+  # ports, so it never finds its virtio root disk.
+  features = {
+    acpi = true
+    apic = {}
   }
 
-  cloudinit = libvirt_cloudinit_disk.cloud_init[each.value.derived_name].id
-
+  devices = {
+    disks = [
+      {
+        # Without an explicit driver format libvirt hands the image to qemu as
+        # raw, and the guest fails to boot off the qcow2 overlay.
+        driver = {
+          name = "qemu"
+          type = "qcow2"
+        }
+        source = {
+          volume = {
+            pool   = libvirt_pool.lab_cluster.name
+            volume = libvirt_volume.lab_volume[each.key].name
+          }
+        }
+        target = {
+          dev = "vda"
+          bus = "virtio"
+        }
+      },
+      {
+        device = "cdrom"
+        driver = {
+          name = "qemu"
+          type = "raw"
+        }
+        source = {
+          volume = {
+            pool   = libvirt_pool.lab_cluster.name
+            volume = libvirt_volume.cloud_init[each.key].name
+          }
+        }
+        target = {
+          dev = "sda"
+          bus = "sata"
+        }
+        read_only = true
+      }
+    ]
+    interfaces = [
+      {
+        model = {
+          type = "virtio"
+        }
+        source = {
+          network = {
+            network = libvirt_network.lab_network.name
+          }
+        }
+      }
+    ]
+    # Cloud images log to ttyS0, so an ISA serial port is what `virsh console`
+    # needs; the virtio console (/dev/hvc0) is a secondary device. Leaving
+    # `source` unset makes libvirt default it to a pty.
+    serials = [
+      {
+        target = {
+          type = "isa-serial"
+          port = 0
+          model = {
+            name = "isa-serial"
+          }
+        }
+      }
+    ]
+    consoles = [
+      {
+        target = {
+          type = "serial"
+          port = 0
+        }
+      },
+      {
+        target = {
+          type = "virtio"
+          port = 1
+        }
+      }
+    ]
+  }
 }
