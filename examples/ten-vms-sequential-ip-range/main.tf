@@ -26,12 +26,13 @@ module "single_ip_range" {
           {
             "name" : "myuser"
             "ssh_authorized_keys" : [
-              "ssh-rsa YOUR_LONG_PUBKEY_HERE key's_comment"
+              "ssh-rsa YOUR_SSH_PUBKEY pubkey_comment"
             ]
             "sudo" : "ALL=(ALL) NOPASSWD:ALL"
-            "lock_passwd" : true
+            "lock_passwd" : false # Set to `true` if not using passwords
             "groups" : "sudo"
             "shell" : "/bin/bash"
+            "plain_text_passwd" : "test123" ## Don't use plaintext passwords if you can avoid them
           }
         ]
       }

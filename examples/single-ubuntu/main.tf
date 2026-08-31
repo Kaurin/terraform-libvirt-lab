@@ -29,10 +29,10 @@ module "single_ubuntu" {
               "ssh-rsa YOUR_SSH_PUBKEY pubkey_comment"
             ]
             "sudo" : "ALL=(ALL) NOPASSWD:ALL"
-            "lock_passwd" : false
+            "lock_passwd" : false ## Set to `true` if not using passwords
             "groups" : "sudo"
             "shell" : "/bin/bash"
-            "plain_text_passwd" : "test123" ## Never do this!
+            "plain_text_passwd" : "test123" ## Don't use plaintext passwords if you can avoid them
           }
         ]
       }
